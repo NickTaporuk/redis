@@ -15,6 +15,9 @@ class php_redis
 	{
 		$this->host = $host;
 		$this->port = $port;
+//		var_dump($this->host);
+//		var_dump($this->port);
+//		exit;
 	}
 
 	/**
@@ -24,6 +27,7 @@ class php_redis
 	 */
 	public function ping( $server_index )
 	{
+//		var_dump($this->get_connection( $server_index ), 'PING');exit;
 		return $this->execute_command($this->get_connection( $server_index ), 'PING');
 	}
 
@@ -294,11 +298,12 @@ class php_redis
 	{
 		if ( !$this->handle )
 		{
+//			var_dump($this->host);
+//			var_dump($this->port);
 			if ( !$sock = fsockopen($this->host, $this->port, $errno, $errstr) )
 			{
 				return false;
 			}
-
 			$this->handle = $sock;
 		}
 
@@ -336,8 +341,8 @@ class php_redis
 		{
 			$commands = implode("\r\n", $commands);
 		}
-
 		$command .= $commands . "\r\n";
+		var_dump($command);
 
 		for ( $written = 0; $written < strlen($command); $written += $fwrite )
 		{

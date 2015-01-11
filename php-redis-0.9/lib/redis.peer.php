@@ -17,6 +17,8 @@ class redis_peer
 	 */
 	public function get_connection()
 	{
+
+//		return redis_pool::get('master');
 		return redis_pool::get('master');
 	}
 
@@ -39,12 +41,21 @@ class redis_peer
 
 	public function update( $id, $data )
 	{
-		$data = array_merge($this->get_by_id($id), $data);
+//		var_dump($this->get_by_id($id));
+//		var_dump($data);
+		if(!is_array($d = $this->get_by_id($id))) $d = [$d];
+		else $d = $this->get_by_id($id);
+		$data = array_merge($d, $data);
+		var_dump($data);
+//		exit;
+
 		$this->get_connection()->set($this->name_space . 'item' . $id, $data);
 	}
 
 	public function get_by_id( $id )
 	{
+//		var_dump($this->get_connection()->get($this->name_space . 'item' . $id));
+//		exit;
 		return $this->get_connection()->get($this->name_space . 'item' . $id);
 	}
 
